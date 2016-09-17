@@ -1,0 +1,146 @@
+
+//-------------------Текстуры---------------------
+
+#Begin_textures
+
+//Потолок внутри дома
+ceiling.bmp
+
+//Пол внутри дома
+floor.bmp
+
+//Крыша
+roof.bmp
+
+//Стена с дверью
+inside_wall_door_middle_middle.bmp
+inside_wall_door_down_left.bmp
+inside_wall_door_down_middle.bmp
+inside_wall_door_down_right.bmp
+inside_wall_door_middle_left.bmp
+inside_wall_door_middle_right.bmp
+inside_wall_door_up_left.bmp
+inside_wall_door_up_middle.bmp
+inside_wall_door_up_right.bmp
+inside_wall_down.bmp
+
+//Внутреняя стена
+inside_wall_middle.bmp
+inside_wall_up.bmp
+
+//Внутрення стена с окном
+inside_wall_window_down_left.bmp
+inside_wall_window_down_middle.bmp
+inside_wall_window_down_right.bmp
+inside_wall_window_middle_left.bmp
+inside_wall_window_middle_middle.bmp
+inside_wall_window_middle_right.bmp
+inside_wall_window_up_left.bmp
+inside_wall_window_up_middle.bmp
+inside_wall_window_up_right.bmp
+
+//Внешняя стена
+outside_wall.bmp
+outside_wall_brick.bmp
+
+//Внешняя с тена сдверью
+outside_wall_door_down_left.bmp
+outside_wall_door_down_right.bmp
+outside_wall_door_middle_left.bmp
+outside_wall_door_middle_right.bmp
+outside_wall_door_up_left.bmp
+outside_wall_door_up_middle.bmp
+outside_wall_door_up_right.bmp
+
+//Внешняя стена с окном
+outside_wall_window_middlep_right.bmp
+outside_wall_window_middle_left.bmp
+outside_wall_window_middle_middle.bmp
+outside_wall_window_up_left.bmp
+outside_wall_window_up_middle.bmp
+outside_wall_window_up_right.bmp
+
+#End_textures
+
+//-----------Количество текстурных полей в секторах-----------------
+
+#Begin_Numpollies
+
+NUMPOLLIES 11
+NUMLEVELS 4
+#End_Numpollies
+
+
+//-------------Параметры координат в пространстве -------------------
+
+
+
+#Begin_coordinates
+::Level 1
+// Floor
+-100 -100  0.0 	0.0 0.0
+-100  100  0.0 	0.0 1.0
+ 100  100  0.0 	1.0 1.0
+ 100 -100  0.0 	1.0 0.0
+
+-300 -100  0.0 	0.0 0.0
+-300  100  0.0 	0.0 1.0
+-100  100  0.0 	1.0 1.0
+-100 -100  0.0 	1.0 0.0
+
+-500 -100  0.0 	0.0 0.0
+-500  100  0.0 	0.0 1.0
+-300  100  0.0 	1.0 1.0
+-300 -100  0.0 	1.0 0.0
+
+ 100 -100  0.0 	0.0 0.0
+ 100  100  0.0 	0.0 1.0
+ 300  100  0.0 	1.0 1.0
+ 300 -100  0.0 	1.0 0.0
+
+::Level 2
+// Ceiling 1
+ 3.0  0.0 -3.0 	6.0 6.1
+ 3.0  0.0  3.0 	6.0 0.0
+-3.0  2.0 -3.0 	0.0 6.0
+-3.0  1.0  3.0 	0.0 0.0
+
+::Level 3
+// Ceiling 1
+ 3.0  1.0  3.0 	6.0 0.0
+-3.0  1.0 -3.0  0.0 6.0
+ 3.0  1.0 -3.0  6.0 6.0
+ 3.0  1.0  3.0 	6.1 0.0
+
+// Ceiling 2
+ 3.0  1.0  3.0 	6.0 0.0
+-3.0  1.0 -3.0  0.0 6.0
+ 3.0  1.0 -3.0  6.0 6.0
+ 3.0  1.0  3.0 	6.1 0.0
+
+::Level 4
+// Ceiling 1
+ 3.0  1.0  3.0 	6.0 0.0
+-3.0  1.0 -3.0  0.0 6.0
+ 3.0  1.0 -3.0  6.0 6.0
+ 3.0  1.0  3.0 	6.1 0.0
+
+// Ceiling 2
+ 3.0  1.0  3.0 	6.0 0.0
+-3.0  1.0 -3.0  0.0 6.0
+ 3.0  1.0 -3.0  6.0 6.0
+ 3.0  1.0  3.0 	6.1 0.0
+
+// Ceiling 1
+ 3.0  1.0  3.0 	6.0 0.0
+-3.0  1.0 -3.0  0.0 6.0
+ 3.0  1.0 -3.0  6.0 6.0
+ 3.0  1.0  3.0 	6.1 0.0
+
+// Ceiling 2
+ 3.0  1.0  3.0 	6.0 0.0
+-3.0  1.0 -3.0  0.0 6.0
+ 3.0  1.0 -3.0  6.0 6.0
+ 3.0  1.0  3.0 	6.1 0.0
+
+#End_coordinates
