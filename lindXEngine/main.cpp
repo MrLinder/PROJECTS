@@ -31,47 +31,60 @@ class Base {									//класс со структурой
 
 class TextureParser:public Base
 {
-	List* Begin;
-	List* End;
+	List* Begin;				//Указатель на начало списка
+	List* End;					//Указатель на конец списка
+	List* pList;				//Временный указатель для прохода по списку
 	
 	char* mask;						//маска искомы файлов	
-	char *path;						//директория + маска для поиска файла
+	char* path;						//директория + маска для поиска файла
+	int count_files;
 	
 	WIN32_FIND_DATA FindFileData;	//Структура найденного файла
 	HANDLE h;							//дескриптор описывающий файл
 	
-	void toStack(char*);
+	char Bufer_x[64];
+	
+	void toStack(char*);				//Внутренняя функция добавления в стек
+	int countElements(char*);			//Внутрення функция подсчет элементов файла
 public:
-	TextureParser(char*);
+	TextureParser();
 	~TextureParser();
-	void ScanDirectory(char* );
-	void show();
+	void ScanDirectory(char* );				//Парсер директории с файлами
+	void Texture_file(char* );				//Файл конфигурационного файла тектур
+	void ParseConfig(fstream &, char* );	//парсер файла с текутурами
 };
 
-TextureParser::TextureParser(char* texture_file)		//инициализация парсера
+TextureParser::TextureParser()		//инициализация парсера
 {
-	cout << texture_file<<endl;
-	
 	mask = new char[6];
 	mask = (char*)"/*.txt\0";
+	count_files = 0;
 	
 	Begin = End = NULL;
-	
-	fstream file((char*)texture_file, ios::in | ios::out | ios::app);
-	if (!file.is_open())
-		exit(1);
-	
-	file << 10 << " "<<123.23<<endl;
-	file << "just text ";
-	
-		
-	
-	file.close();
 }
 
 TextureParser::~TextureParser()				
 {
 	
+}
+
+void TextureParser::ScanDirectory(char* dir)
+{
+	path = new char[strlen(dir)+strlen(mask)+1];
+	strcpy(path, dir);
+	strcat(path, mask);
+	strcat(path, "\0");
+		
+	h = FindFirstFile(path, &FindFileData);
+	
+	if (h != INVALID_HANDLE_VALUE)
+	{
+		do{
+			count_files++;
+			toStack(FindFileData.cFileName);
+		}while (FindNextFile(h,&FindFileData)!=0);
+	}
+	FindClose(h);
 }
 
 void TextureParser::toStack(char* name)
@@ -99,51 +112,150 @@ void TextureParser::toStack(char* name)
 	}				
 }
 
-void TextureParser::ScanDirectory(char* dir)
+int TextureParser::countElements(char* texture_file)
 {
-	path = new char[strlen(dir)+strlen(mask)+1];
-	strcpy(path, dir);
-	strcat(path, mask);
-	strcat(path, "\0");
-		
-	h = FindFirstFile(path, &FindFileData);
+	int count = 0;
+	fstream file((char*)texture_file, ios::in | ios::binary);
+
+	do{ 
+		ParseConfig(file, Bufer_x);
+		if(!file.eof())
+			count++;
+	} while (!file.eof() );
 	
-	if (h != INVALID_HANDLE_VALUE)
-	{
-		do{
-			toStack(FindFileData.cFileName);
-		}while (FindNextFile(h,&FindFileData)!=0);
-	}
-	FindClose(h);
+	file.close();
+	
+	return count;
+	
 }
 
-
-void TextureParser::show()
+void TextureParser::Texture_file(char* texture_file)
 {
-	List *p = Begin;
-	
-	do
-	{ 
-		int i = 0;
+	fstream file((char*)texture_file, ios::in | ios::out | ios::binary);
+	if (!file.is_open())
+	{
+	  cout << "file " << texture_file << "is not exsist" << endl;
+	  exit(1);
+	} 
 		
+	int NumLines = countElements((char*)texture_file); 
+	
+	cout << NumLines << endl; ///del
+	 
+//------------
+	
+		pList = Begin; 
 		do
 		{ 
-			  cout << p->key.elem[i];
-		} while (p->key.elem[i++] != '\0');
+				
+			int i = 0;
+			file.seekg(0, ios::beg);
+			do
+			{ 
+				
+				
+				ParseConfig(file, Bufer_x);
+				
+				bool equil = false;
+				
+							int j = 0;
+							do
+							{ 
+								 j++;
+								
+								 if (pList->key.elem[j] == '\0' && Bufer_x[j] != '\0')
+								 {
+								 	cout << "not eqil! elem < Bufer_x" << endl;
+									cout << pList->key.elem << "  " << Bufer_x <<endl;
+									equil = false;
+						
+									system("PAUSE");
+									break;
+								 } 
+								 if (pList->key.elem[j] != '\0' && Bufer_x[j] == '\0')
+								 {
+									cout << "not eqil! elem > Bufer_x" << endl;
+									cout << pList->key.elem << "  " << Bufer_x <<endl;
+									equil = false;
+								
+									system("PAUSE");
+									break;
+								 }
+								 if (pList->key.elem[j] == '\0' && Bufer_x[j] == '\0')
+								 {
+								   
+								   for ( int i = 0; i < j; ++i) 
+								   {
+									   if(pList->key.elem[i] != Bufer_x[i])
+									   {
+										   cout << "not eqil! diffiren alphabet" << endl;
+											cout << pList->key.elem << "  " << Bufer_x <<endl;
+											equil = false;
+											system("PAUSE");
+											break;
+									   }
+									   else
+									   {
+										   cout << "EUQIL!!!!" << endl;
+										   cout << pList->key.elem << "  " << Bufer_x <<endl;
+										   equil = true;
+										   
+										   if(pList -> next)
+										   pList = pList -> next;
+									   
+										   file.seekg(0, ios::beg);
+										   
+										   system("PAUSE");
+										   break;
+										   
+										   
+									   }
+								   }
+								   
+								   
+								   
+								 } 
+								 
+								 
+							
+							} while (pList->key.elem[j] != '\0' &&  Bufer_x[j] != '\0');
+					
+					
+					
+				if(i == NumLines)
+					file.seekg(0, ios::beg);
+					
+								
+			} while (i++ < NumLines);
+				
+			
+				cout << endl;
+			pList = pList -> next;
+		} while (pList);
+			
+
 		
-		 cout << endl;
-		 		 
-		 p = p->next;
-	} while (p);
+	file.close();
 }
+
+void TextureParser::ParseConfig(fstream &file, char* x)
+{
+	do
+	{ 
+		file >> x;
+		if(x[0]=='/' || x[0]=='\n' || x[0]=='\0' )
+				file.getline(x, 255, '\n');
+	} while (x[0]=='/' || x[0]=='\n' || x[0]=='\0' || x[0]==' ');
+}
+
 
 
 int main() 
 {
-	  TextureParser *ScanTexture = new TextureParser((char*)"config_textures.txt");
+	  TextureParser *ScanTexture = new TextureParser();
 		ScanTexture -> ScanDirectory((char*)"textures");
-
-		ScanTexture -> show();
+		ScanTexture -> Texture_file((char*)"config_textures.txt");
+		
 		
 	  return 0;
 }
