@@ -42,7 +42,9 @@ class TextureParser:public Base
 	WIN32_FIND_DATA FindFileData;	//Структура найденного файла
 	HANDLE h;							//дескриптор описывающий файл
 	
-	char Bufer_x[64];
+	char Bufer_x[256];
+	
+	bool write;
 	
 	void toStack(char*);				//Внутренняя функция добавления в стек
 	int countElements(char*);			//Внутрення функция подсчет элементов файла
@@ -61,6 +63,8 @@ TextureParser::TextureParser()		//инициализация парсера
 	count_files = 0;
 	
 	Begin = End = NULL;
+	
+	 write = false;
 }
 
 TextureParser::~TextureParser()				
@@ -131,54 +135,59 @@ int TextureParser::countElements(char* texture_file)
 
 void TextureParser::Texture_file(char* texture_file)
 {
-	fstream file((char*)texture_file, ios::in | ios::out | ios::binary);
+	fstream file((char*)texture_file, ios::in | ios::out | ios::app);
 	if (!file.is_open())
 	{
 	  cout << "file " << texture_file << "is not exsist" << endl;
 	  exit(1);
 	} 
-		
+			
 	int NumLines = countElements((char*)texture_file); 
+	
 	
 	cout << NumLines << endl; ///del
 	 
 //------------
-	
+			bool equil = false;		
 		pList = Begin; 
 		do
 		{ 
 				
 			int i = 0;
 			file.seekg(0, ios::beg);
+			
 			do
 			{ 
 				
 				
 				ParseConfig(file, Bufer_x);
 				
-				bool equil = false;
 				
+							
 							int j = 0;
 							do
 							{ 
 								 j++;
-								
+						
 								 if (pList->key.elem[j] == '\0' && Bufer_x[j] != '\0')
 								 {
 								 	cout << "not eqil! elem < Bufer_x" << endl;
 									cout << pList->key.elem << "  " << Bufer_x <<endl;
-									equil = false;
-						
+									
+						equil = false;	
 									system("PAUSE");
 									break;
 								 } 
 								 if (pList->key.elem[j] != '\0' && Bufer_x[j] == '\0')
 								 {
+																	 
 									cout << "not eqil! elem > Bufer_x" << endl;
+																		
 									cout << pList->key.elem << "  " << Bufer_x <<endl;
-									equil = false;
-								
+									
+						equil = false;			
 									system("PAUSE");
+																
 									break;
 								 }
 								 if (pList->key.elem[j] == '\0' && Bufer_x[j] == '\0')
@@ -190,7 +199,9 @@ void TextureParser::Texture_file(char* texture_file)
 									   {
 										   cout << "not eqil! diffiren alphabet" << endl;
 											cout << pList->key.elem << "  " << Bufer_x <<endl;
-											equil = false;
+											
+											
+						equil = false;						
 											system("PAUSE");
 											break;
 									   }
@@ -198,30 +209,54 @@ void TextureParser::Texture_file(char* texture_file)
 									   {
 										   cout << "EUQIL!!!!" << endl;
 										   cout << pList->key.elem << "  " << Bufer_x <<endl;
-										   equil = true;
 										   
+							equil = true;													   
 										   if(pList -> next)
 										   pList = pList -> next;
 									   
+										   
+									   
 										   file.seekg(0, ios::beg);
+										   
+										   
 										   
 										   system("PAUSE");
 										   break;
-										   
-										   
 									   }
 								   }
 								   
 								   
 								   
 								 } 
-								 
+								
 								 
 							
 							} while (pList->key.elem[j] != '\0' &&  Bufer_x[j] != '\0');
 					
+			 if (equil == false && i == NumLines)
+			 {
+				
+				
+				char* p = pList->key.elem;
+								
+				file.seekg(0, ios::end);
+								
+				if (Bufer_x[j] != '\n')
+				{
 					
-					
+				 file <<'\n';
+				 
+				} 
+				
+			 while(*p){
+				 	file.put(*p++);
+			 };
+			
+				file.seekg(0, ios::beg);
+				cout << "WRITE: " << pList->key.elem << endl;
+				cout << pList->key.elem << "  " << Bufer_x <<endl;			
+			 } 
+				
 				if(i == NumLines)
 					file.seekg(0, ios::beg);
 					
