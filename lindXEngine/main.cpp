@@ -48,6 +48,7 @@ class TextureParser:public Base
 	
 	void toStack(char*);				//Внутренняя функция добавления в стек
 	int countElements(char*);			//Внутрення функция подсчет элементов файла
+	bool chkEqual(char* a, char *b);
 public:
 	TextureParser();
 	~TextureParser();
@@ -144,133 +145,66 @@ void TextureParser::Texture_file(char* texture_file)
 			
 	int NumLines = countElements((char*)texture_file); 
 	
-	
-	cout << NumLines << endl; ///del
-	 
-//------------
-			bool equil = false;		
-		pList = Begin; 
+	pList = Begin;
+		
+	do
+	{ 
+		int i = NumLines;
+		
+		file.seekg(0, ios::beg);
+				
 		do
-		{ 
-				
-			int i = 0;
-			file.seekg(0, ios::beg);
-			
-			do
-			{ 
-				
-				
-				ParseConfig(file, Bufer_x);
-				
-				
-							
-							int j = 0;
-							do
-							{ 
-								 j++;
+		{  
+			ParseConfig(file, Bufer_x);		
+								
+			bool equal = chkEqual(pList->key.elem, Bufer_x);
 						
-								 if (pList->key.elem[j] == '\0' && Bufer_x[j] != '\0')
-								 {
-								 	cout << "not eqil! elem < Bufer_x" << endl;
-									cout << pList->key.elem << "  " << Bufer_x <<endl;
-									
-						equil = false;	
-									system("PAUSE");
-									break;
-								 } 
-								 if (pList->key.elem[j] != '\0' && Bufer_x[j] == '\0')
-								 {
-																	 
-									cout << "not eqil! elem > Bufer_x" << endl;
-																		
-									cout << pList->key.elem << "  " << Bufer_x <<endl;
-									
-						equil = false;			
-									system("PAUSE");
-																
-									break;
-								 }
-								 if (pList->key.elem[j] == '\0' && Bufer_x[j] == '\0')
-								 {
-								   
-								   for ( int i = 0; i < j; ++i) 
-								   {
-									   if(pList->key.elem[i] != Bufer_x[i])
-									   {
-										   cout << "not eqil! diffiren alphabet" << endl;
-											cout << pList->key.elem << "  " << Bufer_x <<endl;
-											
-											
-						equil = false;						
-											system("PAUSE");
-											break;
-									   }
-									   else
-									   {
-										   cout << "EUQIL!!!!" << endl;
-										   cout << pList->key.elem << "  " << Bufer_x <<endl;
-										   
-							equil = true;													   
-										   if(pList -> next)
-										   pList = pList -> next;
-									   
-										   
-									   
-										   file.seekg(0, ios::beg);
-										   
-										   
-										   
-										   system("PAUSE");
-										   break;
-									   }
-								   }
-								   
-								   
-								   
-								 } 
-								
-								 
-							
-							} while (pList->key.elem[j] != '\0' &&  Bufer_x[j] != '\0');
+			if ( equal == true)
+				break;
 					
-			 if (equil == false && i == NumLines)
-			 {
-				
-				
+			if (i <= 0 && equal == false)
+			{
 				char* p = pList->key.elem;
-								
+				
+				cout << "Add new Files: " << p << endl;
+				
 				file.seekg(0, ios::end);
 								
-				if (Bufer_x[j] != '\n')
-				{
-					
-				 file <<'\n';
-				 
-				} 
-				
-			 while(*p){
-				 	file.put(*p++);
-			 };
-			
-				file.seekg(0, ios::beg);
-				cout << "WRITE: " << pList->key.elem << endl;
-				cout << pList->key.elem << "  " << Bufer_x <<endl;			
-			 } 
-				
-				if(i == NumLines)
-					file.seekg(0, ios::beg);
-					
-								
-			} while (i++ < NumLines);
-				
-			
-				cout << endl;
-			pList = pList -> next;
-		} while (pList);
-			
-
+				if (Bufer_x[NumLines] != '\n')
+					file <<'\n';
+							
+				 while(*p)
+					file.put(*p++);
+			} 
+		} while (i-- != 0);
+						
+		if (pList)
+		pList = pList->next;
+	
+	} while (pList);
 		
 	file.close();
+}
+
+bool TextureParser::chkEqual(char* a, char *b)
+{
+	bool equal = false;
+
+		int j = 0;
+		do
+		{ 
+			if ( ((a[j] != '\0') || (a[j] != ' ') ) && (b[j] != '\0' ) )
+			{
+			 	if ( (a[j] != b[j]) )
+				{
+					equal = false;
+					break;
+				} 
+				
+				equal = true;
+			} 
+		} while ( (a[j++] != '\0') && (b[j] != '\0') );
+	return equal;			
 }
 
 void TextureParser::ParseConfig(fstream &file, char* x)
@@ -294,6 +228,9 @@ int main()
 		
 	  return 0;
 }
+
+
+
 
 
 
