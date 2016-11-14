@@ -1,10 +1,6 @@
-YYYY.txt
-YYYY.txts
-YYYY.txt
-Zzzz.txt
-Zzz.txt
-Xxxx.txt
-Xyxy.txt
-Yxyx.txt
-123.txt
-234.txt
+//״נטפעû
+font_bold_angular.bmp
+font_bold_raggy.bmp
+font_bold_rounded.bmp
+font_default256_ASCII.bmp
+font_default256_bold_ASCII.bmp
