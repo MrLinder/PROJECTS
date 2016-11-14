@@ -1,24 +1,16 @@
-//============================================================================
- // Name         : HelloWorld.cpp
- // Author       : 
- // Version      : 
- // Date         : 
- // License      : 
- // Description  : Hello World in C++
- //============================================================================
- 
-#include <iostream>
+#include <iostream> 
 using namespace std;
 
-int main( )
+#define EVEN(a) a%2==0 ? 1 : 0 
+
+int main()
+
 {
-    int count = 10;
-    int& countRef = count;
-    auto myAuto = countRef;
 
-    countRef = 11;
-    cout << count << " ";
+	if(EVEN(9+1)) cout << "Chetnoe"; 
 
-    myAuto = 12;
-    cout << count << endl;
+	else cout << "Ne Chetnoe";
+
+	return 0;
+
 }
