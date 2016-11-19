@@ -1,31 +1,29 @@
+#ifndef LOADPARAMETERS_CPP
+#define LOADPARAMETERS_CPP
 
-
-
-
-
-Bufers::Bufers
+Bufers::Bufers()
 {
 	cout<<"Buffers Const"<<endl;
 }
 
-Bufers::~Bufers
+Bufers::~Bufers()
 {
-	cout<<"Buffers Dist"<<endl;
+	cout<<"~Buffers Dist"<<endl;
 }	
 
-Base::Base
+Base::Base()
 {
 	cout<<"Base Const"<<endl;
 }
 
-Base::~Base
+Base::~Base()
 {
-	cout<<"Base Distr"<<endl;
+	cout<<"~Base Distr"<<endl;
 }
-
 
 TextureParser::TextureParser()		//инициализация парсера
 {
+	cout<<"TextureParse Const"<<endl;
 	mask = new char[6];
 	mask = (char*)"/*.bmp\0";
 	count_files = 0;
@@ -36,19 +34,19 @@ TextureParser::TextureParser()		//инициализация парсера
 
 TextureParser::~TextureParser()				
 {
-	
+	cout<<"~TextureParse Dist"<<endl;
+		cout << Begin->key.elem << endl;
 }
 
 TypesForParsers::TypesForParsers() 
 { 
-	
+	cout<<"TypesForParsers Const"<<endl;
 };
 
 TypesForParsers::~TypesForParsers() 
 {
-	
+	cout<<"~TypesForParsers Dist"<<endl;
 };
-
 
 void TextureParser::ScanDirectory(char* dir)
 {
@@ -92,22 +90,6 @@ void TextureParser::toStack(char* name)
 		Temp -> prev = End;
 		End = End->next;
 	}				
-}
-
-int TextureParser::countElements(char* texture_file)
-{
-	int count = 0;
-	fstream file((char*)texture_file, ios::in | ios::binary);
-
-	do{ 
-		parseConfig(file, Bufer_x);
-		if(!file.eof())
-			count++;
-	} while (!file.eof() );
-	
-	file.close();
-	
-	return count;
 }
 
 void TextureParser::Texture_file(char* texture_file)
@@ -177,17 +159,17 @@ void TextureParser::Texture_file(char* texture_file)
 								
 						if ((i <= 0 && equal == false) )
 						{
-							char* p = pList->key.elem;
+							char* pFlush = pList->key.elem;
 							
-							cout << "Add new Files: " << p << endl;
+							cout << "Add new Files: " << pFlush << endl;
 							
 							file.seekg(0, ios::end);
 			
 							if (Bufer_x[NumLines] != '\n')
 								file <<'\n';
 							 
-							 while(*p)
-								file.put(*p++);
+							 while(*pFlush)
+								file.put(*pFlush++);
 						} 
 					} while (i-- != 0);
 				if (pList)
@@ -195,6 +177,22 @@ void TextureParser::Texture_file(char* texture_file)
 			} while (pList);
 	}	
 	file.close();
+}
+
+int TextureParser::countElements(char* texture_file)
+{
+	int count = 0;
+	fstream file((char*)texture_file, ios::in | ios::binary);
+
+	do{ 
+		parseConfig(file, Bufer_x);
+		if(!file.eof())
+			count++;
+	} while (!file.eof() );
+	
+	file.close();
+	
+	return count;
 }
 
 bool TextureParser::chkEqual(char* a, char *b)
@@ -226,3 +224,5 @@ void TextureParser::parseConfig(fstream &file, char* x)
 				file.getline(x, 255, '\n');
 	} while (x[0]=='/' || x[0]=='\n' || x[0]=='\0' || x[0]==' ' || x[0]==':');
 }
+
+#endif

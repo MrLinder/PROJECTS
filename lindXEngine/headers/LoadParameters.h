@@ -1,7 +1,10 @@
 #include "windows.h"
-#include <iostream>
 #include <fstream>
+#include <iostream>
 using namespace std;
+
+#ifndef LOADPARAMETERS_H
+#define LOADPARAMETERS_H
 
 class Bufers			//Временные переменные для буфера
 {
@@ -71,6 +74,7 @@ public:
 	TypesForParsers();
 	~TypesForParsers();
 };
+	
+#endif 
 
-
-
+#include "../source/LoadParameters.cpp"
