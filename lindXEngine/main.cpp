@@ -5,13 +5,27 @@
 
 int main() 
 {
-	  TypesForParsers *ScanTexture = new TypesForParsers();
-		ScanTexture -> ScanDirectory((char*)"textures");
-		ScanTexture -> Texture_file((char*)"config_textures.txt");
-
-		delete ScanTexture;
+	
+	
+	TextureParser *TextureFolder = new TextureParser();
+					 TextureFolder -> ScanDirectory((char*)"textures");
+					 TextureFolder -> CreateTextureConfig((char*)"config_textures.txt");
 		
-	  return 0;
+	Load *Config = new Load((char*)"config_world.txt");			//Подключаем конфиг и окрываем поток
+			Config->Include(TextureFolder->ConfigFile);
+			Config->Read((char*)"Textures Path", 1);				//Прочитать и загрузить текстуры
+			Config->Read((char*)"Textures Numpollies", 2);		//Проситать и загрузить параметры полей
+			Config->Read((char*)"Textures Coordinates", 5);		//Прочитать и загрузить координаты текст
+	
+	delete TextureFolder;
+	
+	
+
+	
+	
+	
+		
+	return 0;
 }
 
 #endif

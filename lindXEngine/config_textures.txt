@@ -1,4 +1,3 @@
-//״נטפעû
 font_bold_angular.bmp
 font_bold_raggy.bmp
 font_bold_rounded.bmp
