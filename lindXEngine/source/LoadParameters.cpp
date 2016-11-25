@@ -2,28 +2,42 @@
 #ifndef LOADPARAMETERS_CPP
 #define LOADPARAMETERS_CPP
 
-Bufers::Bufers()
-{
+Bufers::Bufers(){
 	cout<<"Buffers Const"<<endl;
 }
 
-Bufers::~Bufers()
-{
+Bufers::~Bufers(){
 	cout<<"~Buffers Dist"<<endl;
 }	
 
-Base::Base()
-{
+Base::Base(){
 	cout<<"Base Const"<<endl;
 }
 
-Base::~Base()
-{
+Base::~Base(){
 	cout<<"~Base Distr"<<endl;
 }
 
-TextureParser::TextureParser()		//инициализаци€ парсера
-{
+Syntax::Syntax(){
+	cout << "const Syntax" << endl;
+	
+	// теги начала и концца парметров с путями к текстурам
+	B_texture = "Begin_textures";
+	E_texture = "End_textures";
+	
+	// теги начала и концца парметров с координатами текстур
+	B_coord = "Begin_coordinates";
+	E_coord = "End_coordinates";
+	
+	B_Numpoll = "Begin_Numpollies";
+	E_Numpoll = "End_Numpollies";
+};
+
+Syntax::~Syntax(){
+	cout << "dist Syntax"<< endl;
+};	
+
+TextureParser::TextureParser(){	//инициализаци€ парсера
 	cout<<"TextureParse Const"<<endl;
 	mask = new char[6];
 	mask = (char*)"/*.bmp\0";
@@ -33,8 +47,7 @@ TextureParser::TextureParser()		//инициализаци€ парсера
 	write = false;
 }
 
-TextureParser::~TextureParser()				
-{
+TextureParser::~TextureParser(){
 	cout<<"~TextureParse Dist"<<endl;
 	
 	List* pDel;
@@ -47,13 +60,11 @@ TextureParser::~TextureParser()
 	} while (pDel != End );
 }
 
-TypesForParsers::TypesForParsers()
-{
+TypesForParsers::TypesForParsers(){
 	cout<<"TypesForParsers Const"<<endl;
 }
 
-TypesForParsers::~TypesForParsers()
-{
+TypesForParsers::~TypesForParsers(){
 	cout<<"~TypesForParsers Dist"<<endl;
 }
 
@@ -86,8 +97,19 @@ void TextureParser::toStack(char* name)
 		Temp->key.elem = new char[str_length];
 			for ( ; i < str_length; ++i) 
 				Temp->key.elem[i] = name[i];
-					Temp->key.elem[i+1] = '\0';
+					Temp->key.elem[str_length+1] = '\0';
 	
+	
+	int stlengs = strlen(B_texture);				
+	List *BegText = new List();
+	//		BegText->key.elem = new char[strlen(B_texture)+1];
+				//for ( int j = 0; j < strlen(B_texture)+1; ++j) 
+				//	BegText->key.elem[j] = B_texture[j];
+				//		BegText->key.elem[strlen(B_texture)+1] ='\0';
+			
+	//List *EndText;				
+					
+					
 	if (Begin == NULL)		//если ”казатель начала пуст значит этот элемент будет первым.
 	{
 		Begin = Temp;
@@ -182,7 +204,7 @@ void TextureParser::CreateTextureConfig(char* texture_file)
 							if (Bufer_x[NumLines] != '\n')
 								file <<'\n';
 							 
-							 while(*pFlush)
+							while(*pFlush)
 								file.put(*pFlush++);
 						} 
 					} while (i-- != 0);
@@ -249,18 +271,6 @@ Load::Load(char* p)
 	
 	config_file = new char[strlen(p)+1];
 	memcpy(config_file , p, strlen(p)+1);
-	
-	/* ------- Синтаксис файла конфигурации -------*/
-	// теги начала и концца парметров с путями к текстурам
-	B_texture = "Begin_textures";
-	E_texture = "End_textures";
-	
-	// теги начала и концца парметров с координатами текстур
-	B_coord = "Begin_coordinates";
-	E_coord = "End_coordinates";
-	
-	B_Numpoll = "Begin_Numpollies";
-	E_Numpoll = "End_Numpollies";
 	
 	PassNumTextur = new int[2];			//Количество строк до тега и после до закрывающего 
 	PassNumCoord  = new int[2];			//Количество строк до тега и после до закрывающего 
@@ -409,7 +419,7 @@ int* Load::CheckAndCountPar(ifstream &fcount) 	//Проверка синтаксисса конфига и 
 	do
 	{ 
 	next = false;	 
-		do{ 
+		do { 
 			x = new char[64];
 				fcount >> x;
 						

@@ -32,7 +32,23 @@ class Base{					//класс со списком
 		~Base();
 };
 
-class TextureParser:public Base, public Bufers{
+class Syntax{							//параметры связанные с синтаксиссом файла
+protected:	
+	string B_texture;
+	string E_texture;
+	string B_coord;
+	string E_coord;
+	string B_Numpoll;
+	string E_Numpoll;
+	
+	string Begin_param;
+	string End_param;
+
+	Syntax();
+	~Syntax();	
+};
+
+class TextureParser:public Base, public Bufers, public Syntax{
 	List* Begin;							//”казатель на начало списка
 	List* End;								//”казатель на конец списка
 	List* pList;							//¬ременный указатель дл€ прохода по списку
@@ -91,22 +107,6 @@ protected:
 public:	
 	TypesForParsers();
 	~TypesForParsers();
-};
-
-class Syntax{							//параметры связанные с синтаксиссом файла
-protected:	
-	string B_texture;
-	string E_texture;
-	string B_coord;
-	string E_coord;
-	string B_Numpoll;
-	string E_Numpoll;
-	
-	string Begin_param;
-	string End_param;
-	
-	Syntax(){cout << "const Syntax" << endl;};
-	~Syntax(){cout << "dist Syntax"<< endl;};	
 };
 
 class Load:public Syntax, public TypesForParsers					//Класс с параметрами загрузки из файла
