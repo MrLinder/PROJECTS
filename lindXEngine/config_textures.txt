@@ -1,5 +1,0 @@
-font_bold_angular.bmp
-font_bold_raggy.bmp
-font_bold_rounded.bmp
-font_default256_ASCII.bmp
-font_default256_bold_ASCII.bmp
